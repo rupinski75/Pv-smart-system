@@ -40,9 +40,19 @@ module Plug
   def sendOrderToPlug(order)
     ip = '192.168.1.30'
     port = 9999
-
-    socket = TCPSocket.new(ip, port)
-
+	
+	begin 
+		socket = TCPSocket.new(ip, port)
+	rescue StandardErrpr => e
+		puts "Error occurred: #{e}"
+		puts "Failed to establish connection #{socket}."
+		log_file = File.open('pv_system_log.txt', 'a')
+		log_file.puts "Failed to establish connection #{socket}."
+		log_file.puts "Error occurred: #{e}"
+		log_file.close
+		return
+	end
+	
     #p Socket.getnameinfo(Socket.sockaddr_in(9999, "192.168.1.23"))
     off = "{\"system\":{\"set_relay_state\":{\"state\":0}}}"
     on = "{\"system\":{\"set_relay_state\":{\"state\":1}}}"

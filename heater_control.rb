@@ -33,7 +33,7 @@ def mainLoop(heater_working)
 	    puts "At #{time.ctime}: "
 	    log_file.puts "At #{time.ctime}: "
 			puts "Error ocurred: #{e}."
-			log_file.puts "Error ocurred: #{e}."
+			log_file.puts "Error ocurred: #{e}.\n"
 			sleep 300
 			retry
 	  end

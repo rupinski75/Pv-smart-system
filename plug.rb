@@ -45,7 +45,7 @@ module Plug
 		puts "Failed to establish connection #{socket}."
 		log_file = File.open('pv_system_log.txt', 'a')
 		log_file.puts "Failed to establish connection #{socket}."
-		log_file.puts "Error occurred: #{e}"
+		log_file.puts "Error occurred: #{e}\n"
 		log_file.close
 		retry
 	end

@@ -18,7 +18,7 @@ def getPowerConsumption()
   usag["Body"]["Data"]["PowerReal_P_Sum"].to_f
 end
 
-log_file = File.open('pv_system_log.txt', 'a')
+#log_file = File.open('pv_system_log.txt', 'a')
 heater_working = false
 
 def mainLoop
@@ -27,15 +27,15 @@ def mainLoop
 	  time = Time.new
 	  
 	  begin
-		power_production = getPowerProduction
-		power_consumption = getPowerConsumption
+			power_production = getPowerProduction
+			power_consumption = getPowerConsumption
 	  rescue StandardError => e
 	    puts "At #{time.ctime}: "
 	    log_file.puts "At #{time.ctime}: "
-		puts "Error ocurred: #{e}."
-		log_file.puts "Error ocurred: #{e}."
-		sleep 300
-		mainLoop
+			puts "Error ocurred: #{e}."
+			log_file.puts "Error ocurred: #{e}."
+			sleep 300
+			retry
 	  end
 	  
 	  puts "At #{time.ctime}: "
@@ -47,34 +47,32 @@ def mainLoop
 	  puts "\tPower available = #{power_available = power_production + power_consumption} Watts"
 	  log_file.puts "\tPower available = #{power_available = power_production + power_consumption} Watts"
 	  
-
 	  #power_available > 1400 ? Plug.sendOrderToPlug("on") : Plug.sendOrderToPlug("off")
 	  if power_available >= 1400 && !heater_working
-		log_file.puts "Power available turning heater on."
-		log_file.close
-		unless Plug.sendOrderToPlug("on") == false
-		  heater_working = true
-		end
+			log_file.puts "Power available turning heater on."
+			log_file.close
+			unless Plug.sendOrderToPlug("on") == false
+			  heater_working = true
+			end
 	  elsif  heater_working && power_available >= -200
-		log_file.puts "Heater working and enough power"
-		log_file.close
-		unless Plug.sendOrderToPlug("on") == false
-		  heater_working = true
-		end
+			log_file.puts "Heater working and enough power"
+			log_file.close
+			unless Plug.sendOrderToPlug("on") == false
+			  heater_working = true
+			end
 	  elsif heater_working && power_available < -200
-		log_file.puts "Heater working and not enough power, turning off."
-		log_file.close
-		unless Plug.sendOrderToPlug("off") == false
-		  heater_working = false
-		end
+			log_file.puts "Heater working and not enough power, turning off."
+			log_file.close
+			unless Plug.sendOrderToPlug("off") == false
+			  heater_working = false
+			end
 	  elsif !heater_working && power_available < 1400
-		log_file.puts "Heater not working and not enough power."
-		log_file.close
-		unless Plug.sendOrderToPlug("off") == false
-		  heater_working = false
-		end
+			log_file.puts "Heater not working and not enough power."
+			log_file.close
+			unless Plug.sendOrderToPlug("off") == false
+			  heater_working = false
+			end
 	  end
-	  
 	  sleep 300
 	end
 end

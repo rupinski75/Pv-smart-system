@@ -3,9 +3,6 @@ require 'socket'
 module Plug
 
   extend self
-  def test
-    p "test"
-  end
 
   def encrypt(string)
     key = 171
@@ -50,7 +47,7 @@ module Plug
 		log_file.puts "Failed to establish connection #{socket}."
 		log_file.puts "Error occurred: #{e}"
 		log_file.close
-		return
+		retry
 	end
 	
     #p Socket.getnameinfo(Socket.sockaddr_in(9999, "192.168.1.23"))

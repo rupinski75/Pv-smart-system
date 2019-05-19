@@ -21,7 +21,7 @@ end
 #log_file = File.open('pv_system_log.txt', 'a')
 heater_working = false
 
-def mainLoop
+def mainLoop(heater_working)
 	while true do
 	  log_file = File.open('pv_system_log.txt', 'a')
 	  time = Time.new
@@ -77,5 +77,5 @@ def mainLoop
 	end
 end
 
-mainLoop
+mainLoop(heater_working)
 
